@@ -1,4 +1,3 @@
-// src/hooks/useNotifications.js
 import { useState, useEffect } from 'react'
 import { addDays, isBefore, isToday, isTomorrow } from 'date-fns'
 

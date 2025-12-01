@@ -2,14 +2,8 @@
 
 body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
-}
-
-.btn-primary {
-  @apply bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors duration-200;
-}
-
-.btn-secondary {
-  @apply bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-colors duration-200;
+  opacity: 0;
+  animation: fadeIn 0.3s ease-in-out forwards;
 }
 
 /* Smooth transitions for all interactive elements */
