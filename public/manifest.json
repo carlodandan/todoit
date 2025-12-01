@@ -1,6 +1,6 @@
 {
-"name": "TODOit",
-"short_name": "todoit",
+"name": "TODOitApp",
+"short_name": "TODOitApp",
 "start_url": "/",
 "display": "standalone",
 "description": "Web application for setting your TODO.",
