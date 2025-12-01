@@ -33,10 +33,10 @@ const App = () => {
   }
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-blue-50 to-indigo-100">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       {/* Header */}
       <header className="bg-white shadow-sm border-b">
-        <div className="max-w-4xl mx-auto px-4 py-4">
+        <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex justify-between items-center">
             <h1 className="text-2xl font-bold text-gray-800">TO<span className="text-blue-500">DOit</span></h1>
             <div className="flex items-center space-x-6">
@@ -55,32 +55,39 @@ const App = () => {
         </div>
       </header>
 
-      <main className="max-w-4xl mx-auto px-4 py-8">
-        <AddTaskForm onAddTask={addTask} />
-        
-        <ExportImport 
-          onExport={exportTasks} 
-          onImport={handleImport} 
-        />
+      <main className="max-w-7xl mx-auto px-4 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Left Column - Adding Task Area & Export/Import */}
+          <div className="lg:col-span-1 space-y-6">
+            <AddTaskForm onAddTask={addTask} />
+            <ExportImport 
+              onExport={exportTasks} 
+              onImport={handleImport} 
+            />
+          </div>
 
-        <div className="grid gap-6 md:grid-cols-2">
-          <TaskList
-            title={`Pending Tasks (${pendingTasks.length})`}
-            tasks={pendingTasks}
-            onToggleTask={toggleTask}
-            onDeleteTask={deleteTask}
-            onUpdateRemarks={updateTaskRemarks}
-            emptyMessage="No pending tasks - add one above!"
-          />
-          
-          <TaskList
-            title={`Completed Tasks (${completedTasks.length})`}
-            tasks={completedTasks}
-            onToggleTask={toggleTask}
-            onDeleteTask={deleteTask}
-            onUpdateRemarks={updateTaskRemarks}
-            emptyMessage="No completed tasks yet"
-          />
+          {/* Right Columns - Tasks */}
+          <div className="lg:col-span-2">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <TaskList
+                title={`Pending Tasks (${pendingTasks.length})`}
+                tasks={pendingTasks}
+                onToggleTask={toggleTask}
+                onDeleteTask={deleteTask}
+                onUpdateRemarks={updateTaskRemarks}
+                emptyMessage="No pending tasks"
+              />
+              
+              <TaskList
+                title={`Completed Tasks (${completedTasks.length})`}
+                tasks={completedTasks}
+                onToggleTask={toggleTask}
+                onDeleteTask={deleteTask}
+                onUpdateRemarks={updateTaskRemarks}
+                emptyMessage="No completed tasks yet"
+              />
+            </div>
+          </div>
         </div>
       </main>
     </div>

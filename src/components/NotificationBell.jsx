@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { Bell, BellOff, CheckCircle, Circle, Trash2, X } from 'lucide-react'
+import { Bell, BellOff, CheckCircle, Circle, Trash2 } from 'lucide-react'
 import { format } from 'date-fns'
 
 const NotificationBell = ({ 

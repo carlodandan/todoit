@@ -45,14 +45,14 @@
 "screenshots": [
     {
         "src": "/web/landingpage.png",
-        "sizes": "1600x771",
+        "sizes": "1600x805",
         "type": "image/png",
         "form_factor": "wide",
         "description": "A screenshot of the home page - web"
     },
     {
         "src": "/mobile/landingpage.png",
-        "sizes": "360x775",
+        "sizes": "360x755",
         "type": "image/png",
         "form_factor": "narrow",
         "description": "A screenshot of the home page - mobile"

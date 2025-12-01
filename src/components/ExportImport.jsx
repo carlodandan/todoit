@@ -28,20 +28,20 @@ const ExportImport = ({ onExport, onImport }) => {
   }
 
   return (
-    <div className="mb-6">
-      {/* Centered container */}
-      <div className="flex flex-col items-center">
-        {/* Buttons container - centered horizontally */}
-        <div className="flex gap-4 mb-2 justify-center">
+    <div className="bg-white rounded-xl shadow-sm p-6">
+      <h2 className="text-lg font-semibold text-gray-800 mb-4">Data Management</h2>
+      <div className="space-y-4">
+        {/* Buttons */}
+        <div className="flex flex-col sm:flex-row gap-3">
           <button
             onClick={onExport}
-            className="flex items-center bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors shadow-sm"
+            className="flex-1 flex items-center justify-center bg-green-500 text-white px-4 py-3 rounded-lg hover:bg-green-600 transition-colors"
           >
             <Download className="w-4 h-4 mr-2" />
             Export Tasks
           </button>
           
-          <label className={`flex items-center bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 transition-colors cursor-pointer shadow-sm ${isImporting ? 'opacity-50' : ''}`}>
+          <label className={`flex-1 flex items-center justify-center bg-purple-500 text-white px-4 py-3 rounded-lg hover:bg-purple-600 transition-colors cursor-pointer ${isImporting ? 'opacity-50' : ''}`}>
             <Upload className="w-4 h-4 mr-2" />
             {isImporting ? 'Importing...' : 'Import Tasks'}
             <input
@@ -54,16 +54,17 @@ const ExportImport = ({ onExport, onImport }) => {
           </label>
         </div>
         
-        {/* Error message - centered */}
+        {/* Error message */}
         {importError && (
-          <div className="bg-red-50 border border-red-200 rounded-lg p-3 max-w-md text-center">
+          <div className="bg-red-50 border border-red-200 rounded-lg p-3">
             <p className="text-red-800 text-sm">{importError}</p>
           </div>
         )}
         
-        {/* Description text - centered */}
-        <div className="text-xs text-gray-500 text-center mt-2 max-w-md">
-          Export your tasks as a JSON file for backup or import previously exported tasks.
+        {/* Description */}
+        <div className="text-sm text-gray-600">
+          <p className="mb-1">• Export tasks as JSON for backup</p>
+          <p>• Import previously exported tasks</p>
         </div>
       </div>
     </div>
