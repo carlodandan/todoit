@@ -33,7 +33,7 @@ const App = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex flex-col">
       {/* Header */}
       <header className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 py-4">
@@ -55,7 +55,7 @@ const App = () => {
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 py-8">
+      <main className="max-w-7xl mx-auto px-4 py-8 flex-1">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Column - Adding Task Area & Export/Import */}
           <div className="lg:col-span-1 space-y-6">
@@ -90,6 +90,16 @@ const App = () => {
           </div>
         </div>
       </main>
+
+      {/* Footer */}
+      <footer className="bg-white border-t py-4 mt-8">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="text-center text-gray-600 text-sm">
+            <p>© 2025 Carlo Dandan. All Rights Reserved.</p>
+            <p className="mt-1 text-xs text-gray-500">Your tasks stay local. Your privacy stays protected.</p>
+          </div>
+        </div>
+      </footer>
     </div>
   )
 }
