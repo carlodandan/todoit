@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { useTasks } from './hooks/useTasks'
 import { useNotifications } from './hooks/useNotifications'
 import { exportTasks, importTasks } from './utils/storage'
@@ -92,11 +93,64 @@ const App = () => {
       </main>
 
       {/* Footer */}
-      <footer className="bg-white border-t py-4 mt-8">
+      <footer className="bg-gray-50 border-t py-6 mt-8">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center text-gray-600 text-sm">
-            <p>© 2025 Carlo Dandan. All Rights Reserved.</p>
-            <p className="mt-1 text-xs text-gray-500">Your tasks stay local. Your privacy stays protected.</p>
+          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+            <div className="text-center md:text-left">
+              <p className="text-gray-600 text-sm">
+                © 2025 Carlo Dandan. All Rights Reserved.
+              </p>
+              <p className="text-gray-500 text-xs mt-1">
+                TODOit™ is a trademark of Carlo Dandan
+              </p>
+            </div>
+            
+            <div className="flex flex-wrap justify-center gap-4 text-xs">
+              <Link 
+                to="/privacy" 
+                className="text-blue-600 hover:text-blue-800 hover:underline"
+              >
+                Privacy Policy
+              </Link>
+              <span className="text-gray-300">|</span>
+              <Link 
+                to="/terms" 
+                className="text-blue-600 hover:text-blue-800 hover:underline"
+              >
+                Terms of Use
+              </Link>
+              <span className="text-gray-300">|</span>
+              <Link 
+                to="/support" 
+                className="text-blue-600 hover:text-blue-800 hover:underline"
+              >
+                Support
+              </Link>
+              <span className="text-gray-300">|</span>
+              <Link 
+                to="/license" 
+                className="text-blue-600 hover:text-blue-800 hover:underline"
+              >
+                License Agreement
+              </Link>
+            </div>
+            
+            <div className="text-center md:text-right">
+              <p className="text-gray-400 text-xs">
+                Version 1.0.0 • Local Storage Application
+              </p>
+              <p className="text-gray-400 text-xs mt-1">
+                For support: carlodandan.personal@proton.me
+              </p>
+            </div>
+          </div>
+          
+          {/* Microsoft Store Compliance Notice */}
+          <div className="mt-6 pt-4 border-t border-gray-200">
+            <p className="text-gray-500 text-xs text-center">
+              This application is published in the Microsoft Store. Microsoft and the Microsoft Store logo are trademarks of Microsoft Corporation. 
+              This application is not affiliated with, sponsored by, or endorsed by Microsoft Corporation.
+            </p>
           </div>
         </div>
       </footer>
