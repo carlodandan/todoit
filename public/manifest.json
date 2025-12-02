@@ -4,7 +4,7 @@
 "start_url": "/",
 "display": "standalone",
 "description": "Web application for setting your TODO.",
-"lang": "english",
+"lang": "en",
 "dir": "auto",
 "theme_color": "#fff",
 "background_color": "#fff",
@@ -12,6 +12,12 @@
 "icons": [
     {
         "src": "/icons/todoapp_512x512.png",
+        "sizes": "512x512",
+        "type": "image/png",
+        "purpose": "maskable"
+    },
+    {
+        "src": "/icons/todoapp_square.png",
         "sizes": "512x512",
         "type": "image/png",
         "purpose": "maskable"
