@@ -65,5 +65,28 @@
     }
 ],
 "related_applications": [],
-"prefer_related_applications": false
+"prefer_related_applications": false,
+"shortcuts": [
+    {
+      "name": "Privacy Policy",
+      "url": "/privacy",
+      "description": "URL for Privacy Policy"
+    },
+    {
+      "name": "License Agreement",
+      "url": "/license",
+      "description": "URL for License Agreement"
+    },
+    {
+      "name": "Support",
+      "url": "/support",
+      "description": "URL for Support"
+    }
+    ,
+    {
+      "name": "Terms of Use",
+      "url": "/terms",
+      "description": "URL for Terms of Use"
+    }
+  ]
 }
