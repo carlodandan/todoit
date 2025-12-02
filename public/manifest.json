@@ -70,22 +70,26 @@
     {
       "name": "Privacy Policy",
       "url": "/privacy",
+      "src": "/icons/todoapp_96x96.png",
       "description": "URL for Privacy Policy"
     },
     {
       "name": "License Agreement",
       "url": "/license",
+      "src": "/icons/todoapp_96x96.png",
       "description": "URL for License Agreement"
     },
     {
       "name": "Support",
       "url": "/support",
+      "src": "/icons/todoapp_96x96.png",
       "description": "URL for Support"
     }
     ,
     {
       "name": "Terms of Use",
       "url": "/terms",
+      "src": "/icons/todoapp_96x96.png",
       "description": "URL for Terms of Use"
     }
   ]
