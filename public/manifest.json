@@ -9,6 +9,7 @@
 "theme_color": "#fff",
 "background_color": "#fff",
 "orientation": "any",
+"iarc_rating_id": "662ee7fd-d1d4-4183-ba42-9c5501f1ed6e",
 "icons": [
     {
         "src": "/icons/todoapp_512x512.png",
