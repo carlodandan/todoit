@@ -93,5 +93,11 @@
       "src": "/icons/todoapp_96x96.png",
       "description": "URL for Terms of Use"
     }
+  ],
+  "categories": [
+    "lifestyle",
+    "personalization",
+    "productivity",
+    "utilities"
   ]
 }
