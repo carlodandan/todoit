@@ -10,7 +10,8 @@ import ExportImport from './components/ExportImport'
 import './index.css'
 
 const App = () => {
-  const { tasks, addTask, toggleTask, deleteTask, updateTaskRemarks } = useTasks()
+  // Make sure toggleSubTask is destructured from useTasks
+  const { tasks, addTask, toggleTask, deleteTask, updateTaskSubTasks, toggleSubTask } = useTasks()
   const { notifications, removeNotification, markAsRead, markAsUnread } = useNotifications(tasks)
   
   const [unreadNotifications, setUnreadNotifications] = useState([])
@@ -75,7 +76,8 @@ const App = () => {
                 tasks={pendingTasks}
                 onToggleTask={toggleTask}
                 onDeleteTask={deleteTask}
-                onUpdateRemarks={updateTaskRemarks}
+                onUpdateSubtask={updateTaskSubTasks}
+                onToggleSubTask={toggleSubTask}
                 emptyMessage="No pending tasks"
               />
               
@@ -84,7 +86,8 @@ const App = () => {
                 tasks={completedTasks}
                 onToggleTask={toggleTask}
                 onDeleteTask={deleteTask}
-                onUpdateRemarks={updateTaskRemarks}
+                onUpdateSubtask={updateTaskSubTasks}
+                onToggleSubTask={toggleSubTask}
                 emptyMessage="No completed tasks yet"
               />
             </div>

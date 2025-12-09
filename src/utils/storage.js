@@ -4,9 +4,33 @@ const transformTaskDates = (task) => ({
   text: task.text,
   completed: Boolean(task.completed),
   dueDate: task.dueDate ? new Date(task.dueDate) : null,
-  remarks: task.remarks || '',
+  subTasks: Array.isArray(task.subTasks) ? task.subTasks : (task.remarks ? [task.remarks] : []),
+  completedSubTasks: Array.isArray(task.completedSubTasks) ? task.completedSubTasks : [],
   createdAt: task.createdAt ? new Date(task.createdAt) : new Date(),
 })
+
+// Helper to safely filter sub-tasks
+const filterValidSubTasks = (subTasks) => {
+  if (!Array.isArray(subTasks)) return []
+  
+  return subTasks.filter(st => {
+    // Handle different types safely
+    if (typeof st === 'string') {
+      return st.trim() !== ''
+    } else if (typeof st === 'number') {
+      return String(st).trim() !== ''
+    } else if (st === null || st === undefined) {
+      return false
+    }
+    // For other types (objects, arrays), convert to string
+    return String(st).trim() !== ''
+  }).map(st => {
+    // Convert all sub-tasks to strings
+    if (typeof st === 'string') return st
+    if (typeof st === 'number') return String(st)
+    return String(st)
+  })
+}
 
 // Generate unique ID
 const generateId = () => {
@@ -16,7 +40,23 @@ const generateId = () => {
 export const loadTasks = () => {
   try {
     const tasks = JSON.parse(localStorage.getItem('todo_app_tasks') || '[]')
-    return tasks.map(transformTaskDates)
+    
+    return tasks.map(task => {
+      const transformed = transformTaskDates(task)
+      
+      // Ensure subTasks exists and is valid
+      let subTasks = []
+      if (Array.isArray(transformed.subTasks)) {
+        subTasks = filterValidSubTasks(transformed.subTasks)
+      } else if (transformed.subTasks && typeof transformed.subTasks === 'string') {
+        subTasks = transformed.subTasks.trim() !== '' ? [transformed.subTasks] : []
+      }
+      
+      return {
+        ...transformed,
+        subTasks: subTasks
+      }
+    })
   } catch (error) {
     console.error('Error loading tasks from localStorage:', error)
     return []
@@ -31,7 +71,7 @@ export const saveTasks = (tasks) => {
   }
 }
 
-export const addTask = (text, dueDate = null, remarks = '') => {
+export const addTask = (text, dueDate = null, subTasks = []) => {
   if (!text.trim()) return null
 
   const tasks = loadTasks()
@@ -40,7 +80,8 @@ export const addTask = (text, dueDate = null, remarks = '') => {
     text: text.trim(),
     completed: false,
     dueDate: dueDate ? new Date(dueDate) : null,
-    remarks: remarks,
+    subTasks: filterValidSubTasks(subTasks),
+    completedSubTasks: [],
     createdAt: new Date()
   }
 
@@ -58,6 +99,32 @@ export const toggleTask = (taskId) => {
   return updatedTasks
 }
 
+export const toggleSubTask = (taskId, subTaskIndex) => {
+  const tasks = loadTasks()
+  const updatedTasks = tasks.map(task => {
+    if (task.id === taskId) {
+      const completedSubTasks = task.completedSubTasks || []
+      const isCurrentlyCompleted = completedSubTasks.includes(subTaskIndex)
+      
+      let newCompletedSubTasks
+      if (isCurrentlyCompleted) {
+        newCompletedSubTasks = completedSubTasks.filter(idx => idx !== subTaskIndex)
+      } else {
+        newCompletedSubTasks = [...completedSubTasks, subTaskIndex]
+      }
+      
+      return {
+        ...task,
+        completedSubTasks: newCompletedSubTasks
+      }
+    }
+    return task
+  })
+  
+  saveTasks(updatedTasks)
+  return updatedTasks
+}
+
 export const deleteTask = (taskId) => {
   const tasks = loadTasks()
   const updatedTasks = tasks.filter(task => task.id !== taskId)
@@ -65,10 +132,13 @@ export const deleteTask = (taskId) => {
   return updatedTasks
 }
 
-export const updateTaskRemarks = (taskId, remarks) => {
+export const updateTaskSubTasks = (taskId, subTasks) => {
   const tasks = loadTasks()
   const updatedTasks = tasks.map(task =>
-    task.id === taskId ? { ...task, remarks } : task
+    task.id === taskId ? { 
+      ...task, 
+      subTasks: filterValidSubTasks(subTasks)
+    } : task
   )
   saveTasks(updatedTasks)
   return updatedTasks
@@ -79,7 +149,7 @@ export const exportTasks = () => {
   const data = {
     tasks: tasks,
     exportedAt: new Date().toISOString(),
-    version: '1.0',
+    version: '1.1',
     totalTasks: tasks.length,
     completedTasks: tasks.filter(task => task.completed).length
   }
@@ -108,17 +178,16 @@ export const importTasks = (file) => {
           return
         }
 
-        // Validate and transform imported tasks
         const transformedTasks = data.tasks.map(task => ({
           id: task.id || generateId(),
           text: task.text || 'Untitled Task',
           completed: Boolean(task.completed),
           dueDate: task.dueDate ? new Date(task.dueDate) : null,
-          remarks: task.remarks || '',
+          subTasks: filterValidSubTasks(task.subTasks || (task.remarks ? [task.remarks] : [])),
+          completedSubTasks: Array.isArray(task.completedSubTasks) ? task.completedSubTasks : [],
           createdAt: task.createdAt ? new Date(task.createdAt) : new Date()
         }))
 
-        // Replace current tasks with imported ones
         saveTasks(transformedTasks)
         resolve(transformedTasks)
       } catch (error) {
