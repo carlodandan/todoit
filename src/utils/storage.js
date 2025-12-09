@@ -4,6 +4,7 @@ const transformTaskDates = (task) => ({
   text: task.text,
   completed: Boolean(task.completed),
   dueDate: task.dueDate ? new Date(task.dueDate) : null,
+  remarks: task.remarks || '',
   subTasks: Array.isArray(task.subTasks) ? task.subTasks : (task.remarks ? [task.remarks] : []),
   completedSubTasks: Array.isArray(task.completedSubTasks) ? task.completedSubTasks : [],
   createdAt: task.createdAt ? new Date(task.createdAt) : new Date(),
@@ -71,7 +72,7 @@ export const saveTasks = (tasks) => {
   }
 }
 
-export const addTask = (text, dueDate = null, subTasks = []) => {
+export const addTask = (text, dueDate = null, subTasks = [], remarks = '') => {
   if (!text.trim()) return null
 
   const tasks = loadTasks()
@@ -80,6 +81,7 @@ export const addTask = (text, dueDate = null, subTasks = []) => {
     text: text.trim(),
     completed: false,
     dueDate: dueDate ? new Date(dueDate) : null,
+    remarks: remarks || '', // Add this line
     subTasks: filterValidSubTasks(subTasks),
     completedSubTasks: [],
     createdAt: new Date()
@@ -144,6 +146,18 @@ export const updateTaskSubTasks = (taskId, subTasks) => {
   return updatedTasks
 }
 
+export const updateTaskRemarks = (taskId, remarks) => {
+  const tasks = loadTasks()
+  const updatedTasks = tasks.map(task =>
+    task.id === taskId ? { 
+      ...task, 
+      remarks: remarks || ''
+    } : task
+  )
+  saveTasks(updatedTasks)
+  return updatedTasks
+}
+
 export const exportTasks = () => {
   const tasks = loadTasks()
   const data = {
@@ -183,6 +197,7 @@ export const importTasks = (file) => {
           text: task.text || 'Untitled Task',
           completed: Boolean(task.completed),
           dueDate: task.dueDate ? new Date(task.dueDate) : null,
+          remarks: task.remarks || '', // Add this line
           subTasks: filterValidSubTasks(task.subTasks || (task.remarks ? [task.remarks] : [])),
           completedSubTasks: Array.isArray(task.completedSubTasks) ? task.completedSubTasks : [],
           createdAt: task.createdAt ? new Date(task.createdAt) : new Date()

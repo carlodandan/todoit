@@ -4,6 +4,7 @@ import { Plus, X } from 'lucide-react'
 const AddTaskForm = ({ onAddTask }) => {
   const [newTask, setNewTask] = useState('')
   const [dueDate, setDueDate] = useState('')
+  const [remarks, setRemarks] = useState('')
   const [subTasks, setSubTasks] = useState([''])
 
   const handleSubmit = (e) => {
@@ -11,9 +12,10 @@ const AddTaskForm = ({ onAddTask }) => {
     if (newTask.trim()) {
       // Filter out empty sub-tasks
       const filteredSubTasks = subTasks.filter(st => st.trim() !== '')
-      onAddTask(newTask, dueDate, filteredSubTasks)
+      onAddTask(newTask, dueDate, filteredSubTasks, remarks.trim())
       setNewTask('')
       setDueDate('')
+      setRemarks('') // Add this line
       setSubTasks([''])
     }
   }
@@ -22,7 +24,7 @@ const AddTaskForm = ({ onAddTask }) => {
     setSubTasks([...subTasks, ''])
   }
 
-  const removeSubTaskField = (index) => {
+    const removeSubTaskField = (index) => {
     if (subTasks.length > 1) {
       const newSubTasks = [...subTasks]
       newSubTasks.splice(index, 1)
@@ -69,7 +71,24 @@ const AddTaskForm = ({ onAddTask }) => {
             />
           </div>
 
-          {/* Sub-Tasks */}
+          {/* Remarks (Optional) */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Remarks (Optional)
+            </label>
+            <textarea
+              value={remarks}
+              onChange={(e) => setRemarks(e.target.value)}
+              placeholder="Add notes, comments, or additional information..."
+              className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[80px] resize-y"
+              rows="3"
+            />
+            <p className="text-xs text-gray-500 mt-1">
+              Use this for notes that are not part of sub-tasks.
+            </p>
+          </div>
+
+          {/* Sub-Tasks - remaining code stays the same */}
           <div>
             <div className="flex items-center justify-between mb-2">
               <label className="block text-sm font-medium text-gray-700">

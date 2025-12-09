@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { loadTasks, saveTasks, addTask, toggleTask, deleteTask, updateTaskSubTasks, toggleSubTask } from '../utils/storage'
+import { loadTasks, saveTasks, addTask, toggleTask, deleteTask, updateTaskSubTasks, toggleSubTask, updateTaskRemarks } from '../utils/storage'
 
 export const useTasks = () => {
   const [tasks, setTasks] = useState([])
@@ -9,8 +9,8 @@ export const useTasks = () => {
     setTasks(loadTasks())
   }, [])
 
-  const handleAddTask = (text, dueDate, subTasks) => {
-    const newTask = addTask(text, dueDate, subTasks)
+  const handleAddTask = (text, dueDate, subTasks, remarks = '') => {
+    const newTask = addTask(text, dueDate, subTasks, remarks)
     if (newTask) {
       setTasks(prev => [...prev, newTask])
     }
@@ -37,6 +37,11 @@ export const useTasks = () => {
     setTasks(updatedTasks)
   }
 
+  const handleUpdateRemarks = (taskId, remarks) => {
+    const updatedTasks = updateTaskRemarks(taskId, remarks)
+    setTasks(updatedTasks)
+  }
+
   const clearAllTasks = () => {
     saveTasks([])
     setTasks([])
@@ -49,6 +54,7 @@ export const useTasks = () => {
     deleteTask: handleDeleteTask,
     updateTaskSubTasks: handleUpdateSubTasks,
     toggleSubTask: handleToggleSubTask,
+    updateTaskRemarks: handleUpdateRemarks,
     clearAllTasks
   }
 }
