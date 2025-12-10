@@ -15,7 +15,7 @@ const AddTaskForm = ({ onAddTask }) => {
       onAddTask(newTask, dueDate, filteredSubTasks, remarks.trim())
       setNewTask('')
       setDueDate('')
-      setRemarks('') // Add this line
+      setRemarks('')
       setSubTasks([''])
     }
   }
@@ -24,7 +24,7 @@ const AddTaskForm = ({ onAddTask }) => {
     setSubTasks([...subTasks, ''])
   }
 
-    const removeSubTaskField = (index) => {
+  const removeSubTaskField = (index) => {
     if (subTasks.length > 1) {
       const newSubTasks = [...subTasks]
       newSubTasks.splice(index, 1)
@@ -39,13 +39,13 @@ const AddTaskForm = ({ onAddTask }) => {
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-sm p-6">
-      <h2 className="text-lg font-semibold text-gray-800 mb-4">Add New Task</h2>
+    <div className="bg-white dark:bg-gray-950 rounded-xl shadow-sm p-6">
+      <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">Add New Task</h2>
       <form onSubmit={handleSubmit}>
         <div className="space-y-4">
           {/* Task Input */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
               Task Description
             </label>
             <input
@@ -53,51 +53,51 @@ const AddTaskForm = ({ onAddTask }) => {
               value={newTask}
               onChange={(e) => setNewTask(e.target.value)}
               placeholder="What needs to be done?"
-              className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-950 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500"
               required
             />
           </div>
 
           {/* Due Date */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
               Due Date (Optional)
             </label>
             <input
               type="datetime-local"
               value={dueDate}
               onChange={(e) => setDueDate(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500"
             />
           </div>
 
           {/* Remarks (Optional) */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
               Remarks (Optional)
             </label>
             <textarea
               value={remarks}
               onChange={(e) => setRemarks(e.target.value)}
               placeholder="Add notes, comments, or additional information..."
-              className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[80px] resize-y"
+              className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 min-h-[80px] resize-y"
               rows="3"
             />
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
               Use this for notes that are not part of sub-tasks.
             </p>
           </div>
 
-          {/* Sub-Tasks - remaining code stays the same */}
+          {/* Sub-Tasks */}
           <div>
             <div className="flex items-center justify-between mb-2">
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
                 Sub-Tasks (Optional)
               </label>
               <button
                 type="button"
                 onClick={addSubTaskField}
-                className="text-xs text-blue-500 hover:text-blue-700 font-medium"
+                className="text-xs text-blue-500 hover:text-blue-700 font-medium dark:text-blue-400 dark:hover:text-blue-300"
               >
                 + Add More
               </button>
@@ -111,13 +111,13 @@ const AddTaskForm = ({ onAddTask }) => {
                     value={subTask}
                     onChange={(e) => updateSubTask(index, e.target.value)}
                     placeholder={`Sub-task ${index + 1}...`}
-                    className="flex-1 px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="flex-1 px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500"
                   />
                   {subTasks.length > 1 && (
                     <button
                       type="button"
                       onClick={() => removeSubTaskField(index)}
-                      className="text-gray-400 hover:text-red-500 p-1"
+                      className="text-gray-400 hover:text-red-500 dark:text-gray-500 dark:hover:text-red-400 p-1"
                     >
                       <X className="w-4 h-4" />
                     </button>

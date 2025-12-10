@@ -7,6 +7,7 @@ import AddTaskForm from './components/AddTaskForm'
 import TaskList from './components/TaskList'
 import NotificationBell from './components/NotificationBell'
 import ExportImport from './components/ExportImport'
+import ThemeToggle from './components/ThemeToggle'
 import './index.css'
 
 const App = () => {
@@ -35,23 +36,28 @@ const App = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 flex flex-col">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b">
+      <header className="bg-white dark:bg-gray-950 shadow-sm border-b dark:border-gray-700">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-bold text-gray-800">TO<span className="text-blue-500">DOit</span></h1>
+            <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100">
+              TO<span className="text-blue-500 dark:text-blue-400">DOit</span>
+            </h1>
             <div className="flex items-center space-x-6">
-              <div className="text-sm text-gray-600">
+              <div className="text-sm text-gray-600 dark:text-gray-300 mx-3">
                 {tasks.length} tasks • {pendingTasks.length} pending
               </div>
-              <NotificationBell
-                notifications={notifications}
-                unreadCount={unreadNotifications.length}
-                onRemoveNotification={removeNotification}
-                onMarkAsRead={markAsRead}
-                onMarkAsUnread={markAsUnread}
-              />
+              <div className="flex items-center space-x-4">
+                <ThemeToggle />
+                <NotificationBell
+                  notifications={notifications}
+                  unreadCount={unreadNotifications.length}
+                  onRemoveNotification={removeNotification}
+                  onMarkAsRead={markAsRead}
+                  onMarkAsUnread={markAsUnread}
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -98,14 +104,14 @@ const App = () => {
       </main>
 
       {/* Footer */}
-      <footer className="bg-gray-50 border-t py-6 mt-8">
+      <footer className="bg-gray-50 dark:bg-gray-950 border-t dark:border-gray-700 py-6 mt-8">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="text-center md:text-left">
-              <p className="text-gray-600 text-sm">
+              <p className="text-gray-600 dark:text-gray-200 text-sm">
                 © 2025 Carlo Dandan. All Rights Reserved.
               </p>
-              <p className="text-gray-500 text-xs mt-1">
+              <p className="text-gray-500 dark:text-gray-400 text-xs mt-1">
                 TODOit™ is a trademark of Carlo Dandan
               </p>
             </div>
@@ -113,46 +119,46 @@ const App = () => {
             <div className="flex flex-wrap justify-center gap-4 text-xs">
               <Link 
                 to="/privacy" 
-                className="text-blue-600 hover:text-blue-800 hover:underline"
+                className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 hover:underline"
               >
                 Privacy Policy
               </Link>
-              <span className="text-gray-300">|</span>
+              <span className="text-gray-300 dark:text-gray-600">|</span>
               <Link 
                 to="/terms" 
-                className="text-blue-600 hover:text-blue-800 hover:underline"
+                className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 hover:underline"
               >
                 Terms of Use
               </Link>
-              <span className="text-gray-300">|</span>
+              <span className="text-gray-300 dark:text-gray-600">|</span>
               <Link 
                 to="/support" 
-                className="text-blue-600 hover:text-blue-800 hover:underline"
+                className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 hover:underline"
               >
                 Support
               </Link>
-              <span className="text-gray-300">|</span>
+              <span className="text-gray-300 dark:text-gray-600">|</span>
               <Link 
                 to="/license" 
-                className="text-blue-600 hover:text-blue-800 hover:underline"
+                className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 hover:underline"
               >
                 License Agreement
               </Link>
             </div>
             
             <div className="text-center md:text-right">
-              <p className="text-gray-400 text-xs">
-                Version 1.0.0 • Local Storage Application
+              <p className="text-gray-400 dark:text-gray-300 text-xs">
+                Version 1.0.4 • TODOitApp
               </p>
-              <p className="text-gray-400 text-xs mt-1">
+              <p className="text-gray-400 dark:text-gray-300 text-xs mt-1">
                 For support: carlodandan.personal@proton.me
               </p>
             </div>
           </div>
           
           {/* Microsoft Store Compliance Notice */}
-          <div className="mt-6 pt-4 border-t border-gray-200">
-            <p className="text-gray-500 text-xs text-center">
+          <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+            <p className="text-gray-500 dark:text-gray-300 text-xs text-center">
               This application is published in the Microsoft Store. Microsoft and the Microsoft Store logo are trademarks of Microsoft Corporation. 
               This application is not affiliated with, sponsored by, or endorsed by Microsoft Corporation.
             </p>

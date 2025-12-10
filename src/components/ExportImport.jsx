@@ -28,8 +28,8 @@ const ExportImport = ({ onExport, onImport }) => {
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-sm p-6">
-      <h2 className="text-lg font-semibold text-gray-800 mb-4">Data Management</h2>
+    <div className="bg-white dark:bg-gray-950 rounded-xl shadow-sm p-6">
+      <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">Data Management</h2>
       <div className="space-y-4">
         {/* Buttons */}
         <div className="flex flex-col sm:flex-row gap-3">
@@ -38,12 +38,12 @@ const ExportImport = ({ onExport, onImport }) => {
             className="flex-1 flex items-center justify-center bg-green-500 text-white px-4 py-3 rounded-lg hover:bg-green-600 transition-colors"
           >
             <Download className="w-4 h-4 mr-2" />
-            Export Tasks
+            Export
           </button>
           
           <label className={`flex-1 flex items-center justify-center bg-purple-500 text-white px-4 py-3 rounded-lg hover:bg-purple-600 transition-colors cursor-pointer ${isImporting ? 'opacity-50' : ''}`}>
             <Upload className="w-4 h-4 mr-2" />
-            {isImporting ? 'Importing...' : 'Import Tasks'}
+            {isImporting ? 'Importing...' : 'Import'}
             <input
               type="file"
               accept=".json"

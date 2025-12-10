@@ -105,7 +105,7 @@ const TaskItem = ({ task, onToggle, onDelete, onUpdateSubTasks, onToggleSubTask,
   }
 
   return (
-    <div className="border border-gray-100 rounded-lg hover:bg-gray-50 transition-colors animate-fade-in">
+    <div className="border border-gray-100 rounded-lg hover:bg-gray-50 hover:dark:bg-gray-900 transition-colors animate-fade-in">
       {/* Main Task Row */}
       <div className="flex items-center justify-between p-3">
         <div className="flex items-center space-x-3 flex-1">
@@ -121,7 +121,7 @@ const TaskItem = ({ task, onToggle, onDelete, onUpdateSubTasks, onToggleSubTask,
           </button>
           
           <div className="flex-1 min-w-0">
-            <p className={`text-sm ${task.completed ? 'line-through text-gray-400' : 'text-gray-700'}`}>
+            <p className={`text-sm ${task.completed ? 'line-through text-gray-400' : 'text-gray-700 dark:text-gray-200'}`}>
               {task.text}
             </p>
             
@@ -212,10 +212,10 @@ const TaskItem = ({ task, onToggle, onDelete, onUpdateSubTasks, onToggleSubTask,
 
       {/* Remarks Section */}
       {showRemarks && (
-        <div className="border-t border-gray-100 bg-blue-50/50 p-3">
+        <div className="border-t border-gray-100 bg-blue-50/50 dark:bg-gray-900 p-3">
           <div className="space-y-2">
             <div className="flex items-start space-x-2">
-              <FileText className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
+              <FileText className="w-4 h-4 text-blue-500 mt-0.5 shrink-0" />
               
               {editingRemarks ? (
                 // Edit mode for remarks
@@ -250,7 +250,7 @@ const TaskItem = ({ task, onToggle, onDelete, onUpdateSubTasks, onToggleSubTask,
                 <div className="flex-1">
                   <p className="text-xs font-medium text-blue-600 mb-1">Remarks:</p>
                   {task.remarks && task.remarks.trim() ? (
-                    <p className="text-sm text-gray-700 whitespace-pre-wrap">{task.remarks}</p>
+                    <p className="text-sm text-gray-700 dark:text-gray-200 whitespace-pre-wrap">{task.remarks}</p>
                   ) : (
                     <p className="text-sm text-gray-500 italic">No remarks added yet.</p>
                   )}
@@ -263,12 +263,12 @@ const TaskItem = ({ task, onToggle, onDelete, onUpdateSubTasks, onToggleSubTask,
 
       {/* Sub-tasks Section */}
       {(showSubTasks || editingSubTasks) && (
-        <div className="border-t border-gray-100 bg-gray-50/50 p-3">
+        <div className="border-t border-gray-100 bg-gray-50/50 dark:bg-gray-900 p-3 mb-1">
           <div className="space-y-2">
             {!editingSubTasks && task.subTasks && task.subTasks.length > 0 ? (
               // View mode - show sub-tasks with checkboxes
               <div className="space-y-2">
-                <p className="text-xs font-medium text-gray-600 mb-1">Sub-tasks:</p>
+                <p className="text-xs font-medium text-gray-600 dark:text-gray-200 mb-1">Sub-tasks:</p>
                 {task.subTasks.map((subTask, index) => (
                   <div key={index} className="flex items-center space-x-2 pl-6">
                     <button
@@ -281,7 +281,7 @@ const TaskItem = ({ task, onToggle, onDelete, onUpdateSubTasks, onToggleSubTask,
                         <Circle className="w-4 h-4" />
                       )}
                     </button>
-                    <span className={`text-xs ${isSubTaskCompleted(index) ? 'line-through text-gray-400' : 'text-gray-700'}`}>
+                    <span className={`text-xs ${isSubTaskCompleted(index) ? 'line-through text-gray-400' : 'text-gray-700 dark:text-gray-200'}`}>
                       {subTask}
                     </span>
                   </div>
@@ -290,7 +290,7 @@ const TaskItem = ({ task, onToggle, onDelete, onUpdateSubTasks, onToggleSubTask,
             ) : editingSubTasks ? (
               // Edit mode - edit sub-tasks
               <div className="space-y-2">
-                <p className="text-xs font-medium text-gray-600 mb-1">
+                <p className="text-xs font-medium text-gray-600 dark:text-gray-200 mb-1">
                   {subTasks.length > 0 ? 'Edit sub-tasks:' : 'Add sub-tasks:'}
                 </p>
                 
@@ -303,7 +303,7 @@ const TaskItem = ({ task, onToggle, onDelete, onUpdateSubTasks, onToggleSubTask,
                           type="text"
                           value={subTask}
                           onChange={(e) => updateSubTask(index, e.target.value)}
-                          className="flex-1 px-2 py-1 text-xs border border-gray-200 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
+                          className="flex-1 px-2 py-1 text-xs border border-gray-200 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
                         />
                         <button
                           type="button"
@@ -324,7 +324,7 @@ const TaskItem = ({ task, onToggle, onDelete, onUpdateSubTasks, onToggleSubTask,
                     value={newSubTask}
                     onChange={(e) => setNewSubTask(e.target.value)}
                     placeholder={subTasks.length > 0 ? "Add new sub-task..." : "Enter sub-task..."}
-                    className="flex-1 px-2 py-1 text-xs border border-gray-200 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
+                    className="flex-1 px-2 py-1 text-xs border border-gray-200 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
                     onKeyDown={(e) => {
                       if (e.key === 'Enter') {
                         e.preventDefault()

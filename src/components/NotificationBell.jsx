@@ -52,7 +52,7 @@ const NotificationBell = ({
       {/* Notification Bell Button */}
       <button
         onClick={toggleDropdown}
-        className="relative p-2 text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-full transition-colors"
+        className="relative p-2 text-gray-600 hover:text-gray-800 dark:text-gray-100 hover:bg-gray-100 rounded-full transition-colors"
         aria-label="Notifications"
       >
         <Bell className="w-5 h-5" />
@@ -68,7 +68,7 @@ const NotificationBell = ({
         <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-xl border z-50">
           <div className="p-4 border-b">
             <div className="flex justify-between items-center">
-              <h3 className="font-regular text-gray-800">
+              <h3 className="font-regular text-gray-800 dark:text-gray-100">
                 Notifications
               </h3>
               <div className="flex space-x-2">
@@ -115,7 +115,7 @@ const NotificationBell = ({
                           <div className="flex-1">
                             <div className="flex items-center">
                               <div className="w-2 h-2 bg-blue-500 rounded-full mr-2"></div>
-                              <p className="text-sm font-medium text-gray-800">
+                              <p className="text-sm font-medium text-gray-800 dark:text-gray-100">
                                 {notification.message}
                               </p>
                             </div>
@@ -151,7 +151,7 @@ const NotificationBell = ({
                 {readNotifications.length > 0 && (
                   <div>
                     <div className="px-4 py-2 bg-gray-50">
-                      <span className="text-xs font-medium text-gray-700">READ</span>
+                      <span className="text-xs font-medium text-gray-700 dark:text-gray-200">READ</span>
                     </div>
                     {readNotifications.map(notification => (
                       <div
@@ -201,7 +201,7 @@ const NotificationBell = ({
             <div className="p-3 border-t text-center">
               <button
                 onClick={() => setIsOpen(false)}
-                className="text-sm text-gray-600 hover:text-gray-800"
+                className="text-sm text-gray-600 hover:text-gray-800 dark:text-gray-100"
               >
                 Close
               </button>

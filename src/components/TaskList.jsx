@@ -12,8 +12,8 @@ const TaskList = ({
   emptyMessage 
 }) => {
   return (
-    <div className="bg-white rounded-xl shadow-sm p-6">
-      <h2 className="text-lg font-semibold text-gray-800 mb-4">{title}</h2>
+    <div className="bg-white dark:bg-gray-950 rounded-xl shadow-sm p-6">
+      <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">{title}</h2>
       <div className="space-y-3">
         {tasks.map(task => (
           <TaskItem
