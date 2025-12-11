@@ -8,7 +8,8 @@ const TaskList = ({
   onDeleteTask, 
   onUpdateSubtask, 
   onToggleSubTask, 
-  onUpdateRemarks, // Add this prop
+  onUpdateRemarks,
+  onUpdateDueDate, // Add this prop
   emptyMessage 
 }) => {
   return (
@@ -24,6 +25,7 @@ const TaskList = ({
             onUpdateSubTasks={onUpdateSubtask}
             onToggleSubTask={onToggleSubTask}
             onUpdateRemarks={onUpdateRemarks}
+            onUpdateDueDate={onUpdateDueDate} // Pass the new prop
           />
         ))}
         {tasks.length === 0 && (

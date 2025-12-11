@@ -81,7 +81,7 @@ export const addTask = (text, dueDate = null, subTasks = [], remarks = '') => {
     text: text.trim(),
     completed: false,
     dueDate: dueDate ? new Date(dueDate) : null,
-    remarks: remarks || '', // Add this line
+    remarks: remarks || '',
     subTasks: filterValidSubTasks(subTasks),
     completedSubTasks: [],
     createdAt: new Date()
@@ -197,7 +197,7 @@ export const importTasks = (file) => {
           text: task.text || 'Untitled Task',
           completed: Boolean(task.completed),
           dueDate: task.dueDate ? new Date(task.dueDate) : null,
-          remarks: task.remarks || '', // Add this line
+          remarks: task.remarks || '',
           subTasks: filterValidSubTasks(task.subTasks || (task.remarks ? [task.remarks] : [])),
           completedSubTasks: Array.isArray(task.completedSubTasks) ? task.completedSubTasks : [],
           createdAt: task.createdAt ? new Date(task.createdAt) : new Date()
@@ -230,4 +230,16 @@ export const getTaskStats = () => {
     completed: tasks.filter(task => task.completed).length,
     pending: tasks.filter(task => !task.completed).length
   }
+}
+
+export const updateTaskDueDate = (taskId, dueDate) => {
+  const tasks = loadTasks()
+  const updatedTasks = tasks.map(task =>
+    task.id === taskId ? { 
+      ...task, 
+      dueDate: dueDate ? new Date(dueDate) : null
+    } : task
+  )
+  saveTasks(updatedTasks)
+  return updatedTasks
 }

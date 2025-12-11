@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { CheckCircle, Circle, Calendar, Trash2, Edit, Plus, X, ChevronDown, ChevronRight, FileText, Save, XCircle } from 'lucide-react'
+import { CheckCircle, Circle, Calendar, Trash2, Edit, Plus, X, ChevronDown, ChevronRight, FileText, Save, XCircle, Check, RotateCcw } from 'lucide-react'
 import { format, isBefore, isToday, isTomorrow } from 'date-fns'
 
-const TaskItem = ({ task, onToggle, onDelete, onUpdateSubTasks, onToggleSubTask, onUpdateRemarks }) => { // Add onUpdateRemarks to props
+const TaskItem = ({ task, onToggle, onDelete, onUpdateSubTasks, onToggleSubTask, onUpdateRemarks, onUpdateDueDate }) => { // Add onUpdateDueDate
   const [showSubTasks, setShowSubTasks] = useState(false)
   const [editingSubTasks, setEditingSubTasks] = useState(false)
   const [subTasks, setSubTasks] = useState(task.subTasks || [])
@@ -10,6 +10,8 @@ const TaskItem = ({ task, onToggle, onDelete, onUpdateSubTasks, onToggleSubTask,
   const [showRemarks, setShowRemarks] = useState(false)
   const [editingRemarks, setEditingRemarks] = useState(false)
   const [remarks, setRemarks] = useState(task.remarks || '')
+  const [editingDueDate, setEditingDueDate] = useState(false)
+  const [dueDate, setDueDate] = useState('')
 
   // Update subTasks when task.subTasks changes
   useEffect(() => {
@@ -20,6 +22,22 @@ const TaskItem = ({ task, onToggle, onDelete, onUpdateSubTasks, onToggleSubTask,
   useEffect(() => {
     setRemarks(task.remarks || '')
   }, [task.remarks])
+
+  // Update dueDate when task.dueDate changes
+  useEffect(() => {
+    if (task.dueDate) {
+      // Convert Date object to string format for datetime-local input
+      const date = new Date(task.dueDate)
+      const year = date.getFullYear()
+      const month = String(date.getMonth() + 1).padStart(2, '0')
+      const day = String(date.getDate()).padStart(2, '0')
+      const hours = String(date.getHours()).padStart(2, '0')
+      const minutes = String(date.getMinutes()).padStart(2, '0')
+      setDueDate(`${year}-${month}-${day}T${hours}:${minutes}`)
+    } else {
+      setDueDate('')
+    }
+  }, [task.dueDate])
 
   const getDueDateColor = () => {
     if (!task.dueDate) return 'text-gray-500'
@@ -104,6 +122,41 @@ const TaskItem = ({ task, onToggle, onDelete, onUpdateSubTasks, onToggleSubTask,
     }
   }
 
+  // Handle due date editing
+  const handleEditDueDate = () => {
+    setEditingDueDate(true)
+  }
+
+  const handleSaveDueDate = () => {
+    if (onUpdateDueDate) {
+      onUpdateDueDate(task.id, dueDate)
+    }
+    setEditingDueDate(false)
+  }
+
+  const handleCancelDueDate = () => {
+    // Reset to original due date
+    if (task.dueDate) {
+      const date = new Date(task.dueDate)
+      const year = date.getFullYear()
+      const month = String(date.getMonth() + 1).padStart(2, '0')
+      const day = String(date.getDate()).padStart(2, '0')
+      const hours = String(date.getHours()).padStart(2, '0')
+      const minutes = String(date.getMinutes()).padStart(2, '0')
+      setDueDate(`${year}-${month}-${day}T${hours}:${minutes}`)
+    } else {
+      setDueDate('')
+    }
+    setEditingDueDate(false)
+  }
+
+  const handleClearDueDate = () => {
+    if (onUpdateDueDate) {
+      onUpdateDueDate(task.id, null)
+    }
+    setEditingDueDate(false)
+  }
+
   return (
     <div className="border border-gray-100 rounded-lg hover:bg-gray-50 hover:dark:bg-gray-900 transition-colors animate-fade-in">
       {/* Main Task Row */}
@@ -121,18 +174,85 @@ const TaskItem = ({ task, onToggle, onDelete, onUpdateSubTasks, onToggleSubTask,
           </button>
           
           <div className="flex-1 min-w-0">
-            <p className={`text-sm ${task.completed ? 'line-through text-gray-400' : 'text-gray-700 dark:text-gray-200'}`}>
+            <p className={`text-sm pb-1 ${task.completed ? 'line-through text-gray-400' : 'text-gray-700 dark:text-gray-200'}`}>
               {task.text}
             </p>
             
             {/* Task metadata row */}
             <div className="flex flex-wrap items-center gap-3 mt-1">
-              {task.dueDate && (
+              {/* Due Date Section */}
+              {!editingDueDate ? (
+                // View mode for due date (keep this part the same)
                 <div className="flex items-center">
                   <Calendar className="w-3 h-3 mr-1 text-gray-400" />
-                  <span className={`text-xs ${getDueDateColor()}`}>
-                    Due: {format(task.dueDate, 'MMM dd, yyyy HH:mm')}
-                  </span>
+                  {task.dueDate ? (
+                    <div className="flex items-center">
+                      <span className={`text-xs ${getDueDateColor()}`}>
+                        Due: {format(task.dueDate, 'MMM dd, yyyy HH:mm')}
+                      </span>
+                      <button
+                        onClick={handleEditDueDate}
+                        className="ml-1 text-gray-400 hover:text-blue-500 transition-colors p-0.5"
+                        title="Edit due date"
+                      >
+                        <Edit className="w-3 h-3" />
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="flex items-center">
+                      <span className="text-xs text-gray-500">No due date</span>
+                      <button
+                        onClick={handleEditDueDate}
+                        className="ml-1 text-gray-400 hover:text-blue-500 transition-colors p-0.5"
+                        title="Add due date"
+                      >
+                        <Plus className="w-3 h-3" />
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                // Edit mode for due date - MODIFIED to show buttons above
+                <div className="flex flex-col space-y-2">
+                  <div className="flex flex-col space-y-2">
+                    {/* Date input */}
+                    <input
+                      type="datetime-local"
+                      value={dueDate}
+                      onChange={(e) => setDueDate(e.target.value)}
+                      className="px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 dark:text-white"
+                    />
+                    
+                    {/* Action buttons - now displayed above the input */}
+                    <div className="flex items-center space-x-2">
+                      <button
+                        onClick={handleSaveDueDate}
+                        className="text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 flex items-center"
+                        title="Save due date"
+                      >
+                        <Check className="w-3 h-3" />
+                        <span className="ml-1">Save</span>
+                      </button>
+                      <button
+                        onClick={handleCancelDueDate}
+                        className="text-xs bg-gray-500 text-white px-2 py-1 rounded hover:bg-gray-600 flex items-center"
+                        title="Cancel"
+                      >
+                        <X className="w-3 h-3" />
+                        <span className="ml-1">Cancel</span>
+                      </button>
+                      {task.dueDate && (
+                        <button
+                          onClick={handleClearDueDate}
+                          className="text-xs bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 flex items-center"
+                          title="Remove due date"
+                        >
+                          <RotateCcw className="w-3 h-3" />
+                          <span className="ml-1">Clear</span>
+                        </button>
+                      )}
+                    </div>
+                  </div>
                 </div>
               )}
               
@@ -147,11 +267,11 @@ const TaskItem = ({ task, onToggle, onDelete, onUpdateSubTasks, onToggleSubTask,
                         handleEditRemarks()
                       }
                     }}
-                    className="flex items-center text-xs text-blue-500 hover:text-blue-700 transition-colors"
+                    className="flex items-center text-xs text-blue-500 hover:text-blue-700 transition-colors mr-3"
                   >
                     <FileText className="w-3 h-3 mr-1" />
                     {task.remarks && task.remarks.trim() 
-                      ? (showRemarks ? 'Hide Remarks' : 'Show Remarks')
+                      ? (showRemarks ? 'Remarks' : 'Remarks')
                       : 'Add Remarks'
                     }
                   </button>
@@ -166,26 +286,32 @@ const TaskItem = ({ task, onToggle, onDelete, onUpdateSubTasks, onToggleSubTask,
                     <Edit className="w-3 h-3" />
                   </button>
                 )}
+
+                {!editingSubTasks && task.subTasks && task.subTasks.length > 0 && (
+                  <button
+                    onClick={() => setShowSubTasks(!showSubTasks)}
+                    className="flex-shrink-0 text-gray-400 hover:text-blue-500 transition-colors flex items-center gap-1"
+                    title={showSubTasks ? 'Hide sub-tasks' : 'Show sub-tasks'}
+                  >
+                    {showSubTasks ? (
+                      <>
+                        <ChevronDown className="w-4 h-4" />
+                        <span className="text-xs">Sub-Tasks</span>
+                      </>
+                    ) : (
+                      <>
+                        <ChevronRight className="w-4 h-4" />
+                        <span className="text-xs">Sub-Tasks</span>
+                      </>
+                    )}
+                  </button>
+                )}
               </div>
             </div>
           </div>
         </div>
 
-        <div className="flex items-center space-x-1">
-          {!editingSubTasks && task.subTasks && task.subTasks.length > 0 && (
-            <button
-              onClick={() => setShowSubTasks(!showSubTasks)}
-              className="flex-shrink-0 text-gray-400 hover:text-blue-500 transition-colors p-1"
-              title={showSubTasks ? 'Hide sub-tasks' : 'Show sub-tasks'}
-            >
-              {showSubTasks ? (
-                <ChevronDown className="w-4 h-4" />
-              ) : (
-                <ChevronRight className="w-4 h-4" />
-              )}
-            </button>
-          )}
-          
+        <div className="flex items-center space-x-1 pb-2">
           {!editingSubTasks && (
             <button
               onClick={() => {
