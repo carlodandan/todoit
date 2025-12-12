@@ -150,7 +150,7 @@ const App = () => {
             
             <div className="text-center md:text-right">
               <p className="text-gray-400 dark:text-gray-300 text-xs">
-                Version 1.0.5 • TODOitApp
+                Version 1.0.6 • TODOitApp
               </p>
               <p className="text-gray-400 dark:text-gray-300 text-xs mt-1">
                 For support: carlodandan.personal@proton.me
