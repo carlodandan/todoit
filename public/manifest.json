@@ -71,27 +71,40 @@
     {
       "name": "Privacy Policy",
       "url": "/privacy",
-      "src": "/icons/todoapp_96x96.png",
-      "description": "URL for Privacy Policy"
+      "description": "URL for Privacy Policy",
+      "icons": [{
+        "src": "/icons/todoapp_96x96.png",
+        "sizes": "96x96"
+      }]
     },
     {
       "name": "License Agreement",
       "url": "/license",
-      "src": "/icons/todoapp_96x96.png",
-      "description": "URL for License Agreement"
+      "description": "URL for License Agreement",
+            "icons": [{
+        "src": "/icons/todoapp_96x96.png",
+        "sizes": "96x96"
+      }]
     },
     {
       "name": "Support",
       "url": "/support",
-      "src": "/icons/todoapp_96x96.png",
-      "description": "URL for Support"
+      "description": "URL for Support",
+            "icons": [{
+        "src": "/icons/todoapp_96x96.png",
+        "sizes": "96x96"
+      }]
     }
     ,
     {
       "name": "Terms of Use",
       "url": "/terms",
       "src": "/icons/todoapp_96x96.png",
-      "description": "URL for Terms of Use"
+      "description": "URL for Terms of Use",
+      "icons": [{
+        "src": "/icons/todoapp_96x96.png",
+        "sizes": "96x96"
+      }]
     }
   ],
   "categories": [
