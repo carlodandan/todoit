@@ -65,7 +65,7 @@ const NotificationBell = ({
 
       {/* Dropdown */}
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-xl border z-50">
+        <div className="absolute right-0 mt-2 w-80 bg-white dark:bg-gray-900 rounded-lg shadow-xl border z-50">
           <div className="p-4 border-b">
             <div className="flex justify-between items-center">
               <h3 className="font-regular text-gray-800 dark:text-gray-100">
@@ -103,7 +103,7 @@ const NotificationBell = ({
                 {/* Unread Notifications */}
                 {unreadNotifications.length > 0 && (
                   <div className="border-b">
-                    <div className="px-4 py-2 bg-blue-50">
+                    <div className="px-4 py-2 bg-blue-50 dark:bg-gray-800">
                       <span className="text-xs font-medium text-blue-700">NEW</span>
                     </div>
                     {unreadNotifications.map(notification => (
