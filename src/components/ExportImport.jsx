@@ -143,7 +143,7 @@ const ExportImport = ({ onExport, onImport }) => {
         [''],
         ['Application Information', ''],
         ['Application Name:', 'TODOit'],
-        ['Application Version:', '1.0.7'],
+        ['Application Version:', '1.0.8'],
         ['Export Format:', 'Excel (.xlsx)'],
         [''],
         ['File Information', ''],

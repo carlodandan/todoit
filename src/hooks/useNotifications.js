@@ -1,8 +1,21 @@
 import { useState, useEffect } from 'react'
 import { addDays, isBefore, isToday, isTomorrow } from 'date-fns'
+import { pushNotificationService } from '../services/pushNotifications'
 
 export const useNotifications = (tasks) => {
   const [notifications, setNotifications] = useState([])
+  const [pushEnabled, setPushEnabled] = useState(false)
+
+  // Check push notification support and status
+  useEffect(() => {
+    const checkPushStatus = async () => {
+      if (pushNotificationService.checkSupport()) {
+        const isSubscribed = await pushNotificationService.isSubscribed();
+        setPushEnabled(isSubscribed);
+      }
+    };
+    checkPushStatus();
+  }, []);
 
   // Load notifications from localStorage on mount
   useEffect(() => {
@@ -19,7 +32,7 @@ export const useNotifications = (tasks) => {
     localStorage.setItem('todo_notifications', JSON.stringify(notifications))
   }, [notifications])
 
-  // Check for due date notifications
+  // Check for due date notifications and schedule push notifications
   useEffect(() => {
     const now = new Date()
     const upcomingTasks = tasks.filter(task => 
@@ -33,7 +46,16 @@ export const useNotifications = (tasks) => {
       const existingNotification = notifications.find(n => n.taskId === task.id)
       
       if (existingNotification) {
-        return existingNotification // Keep existing notification
+        // Update push notification if enabled
+        if (pushEnabled) {
+          pushNotificationService.scheduleTodoNotification(task);
+        }
+        return existingNotification;
+      }
+
+      // Schedule push notification for new due task
+      if (pushEnabled) {
+        pushNotificationService.scheduleTodoNotification(task);
       }
 
       return {
@@ -55,6 +77,13 @@ export const useNotifications = (tasks) => {
       !tasks.find(task => task.id === notification.taskId)?.completed
     )
 
+    // Cancel push notifications for removed or completed tasks
+    tasks.forEach(task => {
+      if (task.completed || !validTaskIds.has(task.id)) {
+        pushNotificationService.cancelScheduledNotification(task.id);
+      }
+    });
+
     setNotifications(prev => {
       // Keep only valid notifications
       const keptNotifications = prev.filter(n => 
@@ -68,10 +97,43 @@ export const useNotifications = (tasks) => {
       
       return [...keptNotifications, ...uniqueNew]
     })
-  }, [tasks])
+  }, [tasks, pushEnabled])
+
+  // Toggle push notifications
+  const togglePushNotifications = async () => {
+    if (!pushNotificationService.checkSupport()) {
+      alert('Push notifications are not supported in your browser');
+      return;
+    }
+
+    try {
+      if (pushEnabled) {
+        await pushNotificationService.unsubscribe();
+        setPushEnabled(false);
+        // Cancel all scheduled notifications
+        pushNotificationService.cancelAllScheduledNotifications();
+      } else {
+        await pushNotificationService.subscribe();
+        setPushEnabled(true);
+        // Reschedule notifications for current tasks
+        tasks.forEach(task => {
+          if (task.dueDate && !task.completed) {
+            pushNotificationService.scheduleTodoNotification(task);
+          }
+        });
+      }
+    } catch (error) {
+      console.error('Error toggling push notifications:', error);
+      alert('Failed to toggle push notifications. Please check your browser settings.');
+    }
+  };
 
   const removeNotification = (notificationId) => {
-    setNotifications(prev => prev.filter(n => n.id !== notificationId))
+    const notification = notifications.find(n => n.id === notificationId);
+    if (notification) {
+      pushNotificationService.cancelScheduledNotification(notification.taskId);
+    }
+    setNotifications(prev => prev.filter(n => n.id !== notificationId));
   }
 
   const markAsRead = (notificationId) => {
@@ -91,11 +153,15 @@ export const useNotifications = (tasks) => {
   }
 
   const clearAllNotifications = () => {
-    setNotifications([])
+    pushNotificationService.cancelAllScheduledNotifications();
+    setNotifications([]);
   }
 
   return {
     notifications,
+    pushEnabled,
+    pushSupported: pushNotificationService.checkSupport(),
+    togglePushNotifications,
     removeNotification,
     markAsRead,
     markAsUnread,

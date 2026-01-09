@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { Bell, BellOff, CheckCircle, Circle, Trash2 } from 'lucide-react'
+import { Bell, BellOff, CheckCircle, Circle, Trash2, ExternalLink } from 'lucide-react'
 import { format } from 'date-fns'
 
 const NotificationBell = ({ 
@@ -7,10 +7,42 @@ const NotificationBell = ({
   unreadCount, 
   onRemoveNotification, 
   onMarkAsRead, 
-  onMarkAsUnread 
+  onMarkAsUnread,
+  onCompleteTodo 
 }) => {
   const [isOpen, setIsOpen] = useState(false)
   const dropdownRef = useRef(null)
+
+  // Listen for messages from service worker
+  useEffect(() => {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.addEventListener('message', event => {
+        if (event.data && event.data.type === 'COMPLETE_TODO') {
+          // Handle todo completion from push notification
+          if (onCompleteTodo) {
+            onCompleteTodo(event.data.todoId);
+          }
+          
+          // Show a confirmation in the notifications list
+          const taskId = event.data.todoId;
+          const taskName = `Task #${taskId}`;
+          
+          const newNotification = {
+            id: Date.now(),
+            taskId: taskId,
+            taskText: taskName,
+            message: `Task completed via notification!`,
+            type: 'push_action',
+            read: false,
+            createdAt: new Date()
+          };
+          
+          // You might want to add this to your notifications state
+          // This would require updating your useNotifications hook
+        }
+      });
+    }
+  }, [onCompleteTodo]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -47,8 +79,12 @@ const NotificationBell = ({
   const unreadNotifications = notifications.filter(n => !n.read)
   const readNotifications = notifications.filter(n => n.read)
 
+  // Categorize notifications by type
+  const dueNotifications = notifications.filter(n => n.type === 'due_date');
+  const pushNotifications = notifications.filter(n => n.type === 'push_action');
+
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div className="relative ml-4" ref={dropdownRef}>
       {/* Notification Bell Button */}
       <button
         onClick={toggleDropdown}
@@ -97,6 +133,9 @@ const NotificationBell = ({
               <div className="p-4 text-center text-gray-500">
                 <BellOff className="w-8 h-8 mx-auto mb-2 text-gray-300" />
                 <p>No notifications</p>
+                <p className="text-sm mt-1 text-gray-400">
+                  Enable push notifications to get reminders
+                </p>
               </div>
             ) : (
               <>
@@ -118,6 +157,9 @@ const NotificationBell = ({
                               <p className="text-sm font-medium text-gray-800 dark:text-gray-100">
                                 {notification.message}
                               </p>
+                              {notification.type === 'push_action' && (
+                                <ExternalLink className="w-3 h-3 ml-1 text-blue-500" />
+                              )}
                             </div>
                             {notification.dueDate && (
                               <p className="text-xs text-gray-500 mt-1">
@@ -165,6 +207,9 @@ const NotificationBell = ({
                               <p className="text-sm text-gray-600">
                                 {notification.message}
                               </p>
+                              {notification.type === 'push_action' && (
+                                <ExternalLink className="w-3 h-3 ml-1 text-blue-500" />
+                              )}
                             </div>
                             {notification.dueDate && (
                               <p className="text-xs text-gray-400 mt-1">
